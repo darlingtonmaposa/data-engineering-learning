@@ -11,7 +11,7 @@ Books being studied:
 
 ---
 
-## Objectives
+## Overview
 
 This repository serves as a structured engineering notebook where I:
 
