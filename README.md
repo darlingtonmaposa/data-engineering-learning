@@ -1,8 +1,4 @@
-# data-engineering-learning
-Developing deep expertise in modern data engineering by studying distributed data systems and building practical experiments inspired by Designing Data-Intensive Applications and Fundamentals of Data Engineering.
-
-
-# Data Engineering Learning Repository
+**Developing deep expertise in modern data engineering through distributed systems and practical experiments inspired by DDIA and FODE**
 
 This repository documents my journey toward mastering modern data engineering.
 
@@ -12,7 +8,6 @@ Books being studied:
 
 • Designing Data-Intensive Applications – Martin Kleppmann  
 • Fundamentals of Data Engineering – Joe Reis & Matt Housley
-
 
 ---
 
@@ -26,12 +21,9 @@ This repository serves as a structured engineering notebook where I:
 - Design architectures used in real-world data platforms
 - Develop a deep understanding of distributed data systems
 
-
 ---
 
 ## What This Repository Contains
-
-The repository is organized into several sections:
 
 ### DDIA Notes
 
@@ -45,7 +37,6 @@ Detailed notes and explanations from *Designing Data-Intensive Applications* cov
 - Distributed systems challenges
 - Batch and stream processing
 
-
 ### FODE Notes
 
 Notes from *Fundamentals of Data Engineering* exploring:
@@ -57,7 +48,6 @@ Notes from *Fundamentals of Data Engineering* exploring:
 - Data serving
 - Governance and security
 
-
 ### Labs
 
 Hands-on experiments that implement and test important concepts such as:
@@ -66,7 +56,6 @@ Hands-on experiments that implement and test important concepts such as:
 - Indexing performance
 - Fan-out timeline architectures
 - Replication simulations
-
 
 ### Architecture Notes
 
@@ -78,7 +67,6 @@ Deep explanations of important data systems topics including:
 - Streaming architectures
 - Data platform design
 
-
 ### System Design
 
 Design explorations of large-scale data systems such as:
@@ -88,11 +76,9 @@ Design explorations of large-scale data systems such as:
 - Uber trip data pipelines
 - YouTube recommendation systems
 
-
 ### Weekly Learning Log
 
 A record of weekly learning progress, reflections, and insights gained while studying.
-
 
 ---
 
@@ -107,7 +93,6 @@ Experiments in this repository use modern data engineering tools including:
 - Linux / WSL
 - Git & GitHub
 
-
 ---
 
 ## Purpose
@@ -116,13 +101,11 @@ This repository is not just a collection of notes.
 
 It is intended to function as a **data engineering lab notebook** where theoretical knowledge is combined with practical experimentation and system design thinking.
 
-
 ---
 
 ## Long-Term Goal
 
 To develop strong expertise in designing scalable, reliable, and maintainable data systems and to apply these principles in real-world data engineering projects.
-
 
 ---
 
