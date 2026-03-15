@@ -2,6 +2,8 @@
 
 This repository documents my journey toward mastering modern data engineering.
 
+![Data Engineering Learning Journey](images/landing_image2.png)
+
 The goal of this project is to develop deep expertise in distributed data systems, data architecture, and large-scale data processing by studying two foundational books and implementing practical experiments based on their concepts.
 
 Books being studied:
