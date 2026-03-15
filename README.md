@@ -11,6 +11,22 @@ Books being studied:
 
 ---
 
+## Table of Contents
+- [Overview](#overview)
+- [What This Repository Contains](#what-this-repository-contains)
+  - [DDIA Notes](#ddia-notes)
+  - [FODE Notes](#fode-notes)
+  - [Labs](#labs)
+  - [Architecture Notes](#architecture-notes)
+  - [System Design](#system-design)
+  - [Weekly Learning Log](#weekly-learning-log)
+- [Tools Used](#tools-used)
+- [Purpose](#purpose)
+- [Long-Term Goal](#long-term-goal)
+- [Author](#author)
+
+---
+
 ## Overview
 
 This repository serves as a structured engineering notebook where I:
