@@ -49,54 +49,64 @@ The repository combines **theory, experimentation, and system design** to develo
 
 ---
 
-# Repository Structure
-└── data-engineering-learning
-    ├── README.md
-    ├── datasets
-    │   ├── README.md
-    │   ├── real-world
-    │   └── synthetic
-    ├── experiments
-    │   └── README.md
-    ├── images
-    │   ├── batch_vs_stream.png
-    │   ├── data_platform_architecture.png
-    │   ├── fanout_timeline.png
-    │   ├── landing_image1.png
-    │   ├── landing_image2.png
-    │   ├── partitioning_diagram.png
-    │   └── replication_diagram.png
-    ├── labs
-    │   ├── README.md
-    │   ├── data-models-lab
-    │   ├── fanout-timeline
-    │   ├── indexing-benchmark
-    │   └── replication-simulation
-    ├── learning-roadmap
-    │   └── study-plan.md
-    ├── notes
-    │   ├── architecture-patterns
-    │   ├── ddia
-    │   ├── distributed-systems
-    │   └── fode
-    ├── resources
-    │   ├── articles.md
-    │   ├── papers.md
-    │   └── tools.md
-    ├── system-design
-    │   ├── netflix-data-platform
-    │   ├── twitter-timeline
-    │   ├── uber-data-pipeline
-    │   └── youtube-recommendations
-    └── weekly-learning-log
-        ├── articles.md
-        ├── papers.md
-        ├── reflections.md
-        ├── tools.md
-        ├── week01.md
-        ├── week02.md
-        └── week03.md
+## Repository Structure
 
+```
+data-engineering-learning
+├── README.md
+├── datasets
+│   ├── README.md
+│   ├── real-world
+│   └── synthetic
+│
+├── experiments
+│   └── README.md
+│
+├── images
+│   ├── batch_vs_stream.png
+│   ├── data_platform_architecture.png
+│   ├── fanout_timeline.png
+│   ├── landing_image1.png
+│   ├── landing_image2.png
+│   ├── partitioning_diagram.png
+│   └── replication_diagram.png
+│
+├── labs
+│   ├── README.md
+│   ├── data-models-lab
+│   ├── fanout-timeline
+│   ├── indexing-benchmark
+│   └── replication-simulation
+│
+├── learning-roadmap
+│   └── study-plan.md
+│
+├── notes
+│   ├── architecture-patterns
+│   ├── ddia
+│   ├── distributed-systems
+│   └── fode
+│
+├── resources
+│   ├── articles.md
+│   ├── papers.md
+│   └── tools.md
+│
+├── system-design
+│   ├── netflix-data-platform
+│   ├── twitter-timeline
+│   ├── uber-data-pipeline
+│   └── youtube-recommendations
+│
+└── weekly-learning-log
+    ├── articles.md
+    ├── papers.md
+    ├── reflections.md
+    ├── tools.md
+    ├── week01.md
+    ├── week02.md
+    └── week03.md
+```
 
 ---
 
