@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual environments
+venv/
+.env/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Data dumps
+*.csv
+*.parquet
+*.sqlite
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
