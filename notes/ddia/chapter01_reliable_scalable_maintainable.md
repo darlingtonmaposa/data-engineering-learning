@@ -1,4 +1,6 @@
-# Data-Intensive Applications 
+# Reliability, Scalability, and Maintainability of Data Applications
+
+## Data-Intensive Applications 
 
 ### Overview
 
