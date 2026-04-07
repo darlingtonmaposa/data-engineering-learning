@@ -92,3 +92,50 @@ Because faults are unavoidable, systems should be designed so that faults do not
 Testing reliability can involve deliberate fault injection.
 
 Example: Netflix Chaos Monkey.
+
+## Types of faults
+
+# Reliability — DDIA Chapter 1
+
+Reliability means a system continues operating correctly even when faults occur.
+
+## Fault vs Failure
+
+Fault: component deviates from specification  
+Failure: system stops providing service
+
+## Types of Faults
+
+### Hardware Faults
+
+Hardware failures are common in large systems.
+
+Examples include:
+
+- disk failures
+- RAM faults
+- power outages
+- network issues
+
+Even highly reliable hardware fails frequently at scale.
+
+Example:
+
+A cluster with **10,000 disks** may experience **one disk failure per day**.
+
+### Handling Hardware Failures
+
+Traditional solutions use hardware redundancy:
+
+- RAID
+- dual power supplies
+- backup generators
+
+Modern distributed systems increasingly rely on **software fault tolerance** instead.
+
+### Operational Benefits
+
+Systems designed to tolerate machine failures support:
+
+- rolling upgrades
+- node replacement without full system downtime
