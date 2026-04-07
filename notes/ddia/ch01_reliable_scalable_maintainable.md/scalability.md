@@ -1,4 +1,4 @@
-# 2. Scalability 
+#  Scalability 
 
 Scalability refers to a system's ability to handle increased load.
 
@@ -136,7 +136,7 @@ Examples:
 - CPU scheduling
 - garbage collection
 
-Therefore response time must be treated as a distribution.
+Therefore, response time must be treated as a distribution.
 
 ---
 
@@ -169,7 +169,7 @@ These strongly impact user experience.
 
 ## 6. Queueing Effects
 
-Servers can only process limited requests in parallel.
+Servers can process only a limited number of requests in parallel.
 
 Slow requests can delay others in the queue.
 
