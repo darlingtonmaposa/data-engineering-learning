@@ -157,3 +157,7 @@ Reducing software faults requires:
 - process isolation
 - automatic restart of crashed processes
 - monitoring and alerting
+
+**Key engineering principle:**
+Hardware failures → expect random loss of nodes
+Software failures → expect simultaneous failure of many nodes
