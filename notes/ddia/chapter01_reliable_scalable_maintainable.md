@@ -128,3 +128,30 @@ Systems designed to tolerate machine failures support:
 
 - rolling upgrades
 - node replacement without full system downtime
+
+## 2. Software Errors
+
+Software faults differ from hardware failures because they are often **systematic and correlated**.
+
+A single software bug can cause failures across many machines simultaneously.
+
+### Examples
+
+- Application crash triggered by specific input
+- Runaway process consuming system resources
+- Dependent service becoming slow or returning corrupted data
+- Cascading failures across system components
+
+Example:
+
+The **2012 leap second bug** caused many Linux systems to hang simultaneously.
+
+### Mitigation Strategies
+
+Reducing software faults requires:
+
+- careful system design
+- extensive testing
+- process isolation
+- automatic restart of crashed processes
+- monitoring and alerting
