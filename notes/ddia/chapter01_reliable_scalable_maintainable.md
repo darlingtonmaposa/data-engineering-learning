@@ -65,3 +65,30 @@ Application
 → Kafka (event streaming)
 
 The service exposes functionality through an API, which hides the internal complexity from clients.
+
+## Reliability 
+
+Reliability refers to a system’s ability to continue operating correctly even when faults occur.
+
+### Characteristics of Reliable Systems
+
+- Perform expected functions
+- Handle unexpected user input
+- Maintain acceptable performance under load
+- Prevent unauthorized access
+
+### Fault vs Failure
+
+Fault: A component deviates from specification.
+
+Failure: The system stops delivering its intended service.
+
+### Engineering Insight
+
+Because faults are unavoidable, systems should be designed so that faults do not escalate into failures.
+
+### Chaos Engineering
+
+Testing reliability can involve deliberate fault injection.
+
+Example: Netflix Chaos Monkey.
