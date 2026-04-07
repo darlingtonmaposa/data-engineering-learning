@@ -131,13 +131,13 @@ Systems designed to tolerate machine failures support:
 - rolling upgrades
 - node replacement without full system downtime
 
-## 2. Software Errors
+### 2. Software Errors
 
 Software faults differ from hardware failures because they are often **systematic and correlated**.
 
 A single software bug can cause failures across many machines simultaneously.
 
-### Examples
+#### Examples
 
 - Application crash triggered by specific input
 - Runaway process consuming system resources
@@ -148,7 +148,7 @@ Example:
 
 The **2012 leap second bug** caused many Linux systems to hang simultaneously.
 
-### Mitigation Strategies
+#### Mitigation Strategies
 
 Reducing software faults requires:
 
@@ -162,18 +162,18 @@ Reducing software faults requires:
 - Hardware failures → expect random loss of nodes
 - Software failures → expect simultaneous failure of many nodes
 
-## 3. Human Errors
+### 3. Human Errors
 
 Human errors are a major source of system failures.  
 Studies show that operator configuration errors are often the leading cause of outages.
 
-### Examples
+#### Examples
 
 - incorrect configuration changes
 - faulty deployments
 - operational mistakes
 
-### Strategies for Reducing Human Error
+#### Strategies for Reducing Human Error
 
 Systems should be designed to minimize the impact of human mistakes.
 
