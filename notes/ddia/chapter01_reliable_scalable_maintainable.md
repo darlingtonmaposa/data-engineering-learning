@@ -184,3 +184,31 @@ Common approaches include:
 - thorough automated testing
 - monitoring and telemetry
 - fast rollback and recovery mechanisms
+
+## Importance of Reliability
+
+Reliability is important for most software systems, not only safety-critical applications.
+
+Failures can cause:
+
+- lost productivity
+- financial loss
+- legal risk
+- reputational damage
+
+Engineers also have a responsibility to protect user data.
+
+Example:
+
+If a photo storage service loses a family's photos, the damage may be irreversible.
+
+### Reliability Trade-offs
+
+In some situations reliability may be sacrificed to reduce cost or accelerate development.
+
+Examples include:
+
+- early-stage prototypes
+- services with narrow profit margins
+
+However, such trade-offs should always be conscious engineering decisions.
