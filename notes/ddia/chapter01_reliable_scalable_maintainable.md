@@ -161,3 +161,26 @@ Reducing software faults requires:
 **Key engineering principle:** 
 - Hardware failures → expect random loss of nodes
 - Software failures → expect simultaneous failure of many nodes
+
+## 3. Human Errors
+
+Human errors are a major source of system failures.  
+Studies show that operator configuration errors are often the leading cause of outages.
+
+### Examples
+
+- incorrect configuration changes
+- faulty deployments
+- operational mistakes
+
+### Strategies for Reducing Human Error
+
+Systems should be designed to minimize the impact of human mistakes.
+
+Common approaches include:
+
+- designing safe system interfaces
+- using sandbox and staging environments
+- thorough automated testing
+- monitoring and telemetry
+- fast rollback and recovery mechanisms
