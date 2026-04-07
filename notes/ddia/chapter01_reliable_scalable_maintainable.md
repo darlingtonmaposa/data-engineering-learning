@@ -95,18 +95,7 @@ Example: Netflix Chaos Monkey.
 
 ## Types of faults
 
-# Reliability — DDIA Chapter 1
-
-Reliability means a system continues operating correctly even when faults occur.
-
-## Fault vs Failure
-
-Fault: component deviates from specification  
-Failure: system stops providing service
-
-## Types of Faults
-
-### Hardware Faults
+### 1. Hardware Faults
 
 Hardware failures are common in large systems.
 
