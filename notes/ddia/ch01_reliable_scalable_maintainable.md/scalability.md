@@ -182,3 +182,81 @@ This is called head-of-line blocking.
 Load testing should generate requests independently of response times.
 
 Waiting for each response before sending the next request leads to unrealistic results.
+
+# Approaches for Coping with Load
+
+Scalability focuses on maintaining system performance as workload increases.
+
+Systems that perform well at one scale often require architectural redesign when load increases significantly.
+
+---
+
+## Vertical Scaling
+
+Vertical scaling increases the capacity of a single machine.
+
+Examples include upgrading CPU, memory, or disk performance.
+
+Advantages:
+- simple architecture
+
+Limitations:
+- hardware cost increases rapidly
+- physical scaling limits exist
+
+---
+
+## Horizontal Scaling
+
+Horizontal scaling distributes system workload across multiple machines.
+
+This approach is commonly referred to as a shared-nothing architecture.
+
+Advantages:
+- higher scalability potential
+
+Disadvantages:
+- introduces distributed system complexity
+
+---
+
+## Hybrid Approaches
+
+Most production systems combine vertical and horizontal scaling.
+
+Using several moderately powerful machines often provides a balance between cost and operational complexity.
+
+---
+
+## Elastic vs Manual Scaling
+
+Elastic systems automatically add resources in response to increased load.
+
+Manual scaling requires engineers to analyze system capacity and add resources when needed.
+
+---
+
+## Stateless vs Stateful Systems
+
+Stateless services scale easily because requests can be processed by any node.
+
+Stateful systems such as databases require data distribution and synchronization, which introduces significant complexity.
+
+---
+
+## Application-Specific Architectures
+
+There is no universal scalable architecture.
+
+System design depends on workload characteristics such as:
+
+- read and write volume
+- data size
+- latency requirements
+- access patterns
+
+---
+
+## Key Insight
+
+Scalable systems are built from general-purpose distributed system building blocks arranged according to application requirements.
