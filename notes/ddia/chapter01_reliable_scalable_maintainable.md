@@ -1,4 +1,4 @@
-## Data-Intensive Applications 
+# Data-Intensive Applications 
 
 ### Overview
 
