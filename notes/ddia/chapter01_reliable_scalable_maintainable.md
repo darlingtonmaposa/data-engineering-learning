@@ -68,7 +68,7 @@ Application
 
 The service exposes functionality through an API, which hides the internal complexity from clients.
 
-## Reliability 
+## 1. Reliability 
 
 Reliability refers to a system’s ability to continue operating correctly even when faults occur.
 
