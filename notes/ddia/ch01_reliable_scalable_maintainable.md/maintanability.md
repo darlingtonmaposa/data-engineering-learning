@@ -107,7 +107,7 @@ Examples include:
 
 Self-healing mechanisms reduce downtime and operational workload.
 
-# Simplicity
+### 2. Simplicity
 
 As software systems grow larger, they often become complex and difficult to maintain.
 
@@ -115,7 +115,7 @@ Excessive complexity slows development and increases the likelihood of bugs.
 
 Systems that become extremely messy are sometimes described as **big balls of mud**.
 
-## Symptoms of Complexity
+#### Symptoms of Complexity
 
 Common symptoms include:
 
@@ -127,7 +127,7 @@ Common symptoms include:
 
 These issues make systems harder to understand and maintain.
 
-## Accidental vs Essential Complexity
+#### Accidental vs Essential Complexity
 
 Two types of complexity exist.
 
@@ -143,7 +143,7 @@ Complexity created by poor implementation choices such as messy architecture or 
 
 Engineers should aim to reduce accidental complexity wherever possible.
 
-## Abstraction
+#### Abstraction
 
 Abstraction is a key technique for managing complexity.
 
@@ -158,7 +158,7 @@ Good abstractions allow systems to remain understandable and maintainable even a
 
 Throughout distributed systems engineering, designing good abstractions is one of the most important challenges.
 
-# Evolvability
+### Evolvability
 
 Software systems rarely remain static. Requirements constantly change due to new user needs, business priorities, technological advances, and regulatory requirements.
 
@@ -166,7 +166,7 @@ Because of this, systems must be designed so they can adapt easily.
 
 This property is known as evolvability.
 
-## Why Evolvability Matters
+#### Why Evolvability Matters
 
 Over time, systems need to support:
 
@@ -177,7 +177,7 @@ Over time, systems need to support:
 
 Systems that are difficult to modify become rigid legacy systems.
 
-## Agile and Change
+#### Agile and Change
 
 Agile development practices help teams adapt to changing requirements.
 
@@ -192,7 +192,7 @@ However, most Agile techniques focus on small changes within a single applicatio
 
 DDIA expands this concept to the level of large distributed data systems.
 
-## Evolvability in Large Systems
+#### Evolvability in Large Systems
 
 Large data systems may consist of many components such as:
 
@@ -205,13 +205,13 @@ Changing system architecture in such environments can be complex.
 
 Designing systems that support safe and incremental change is therefore critical.
 
-## Relationship to Simplicity
+#### Relationship to Simplicity
 
 Systems that are simple and well-structured are easier to modify.
 
 Reducing complexity improves evolvability.
 
-## Role of Abstractions
+#### Role of Abstractions
 
 Abstractions help hide implementation details.
 
