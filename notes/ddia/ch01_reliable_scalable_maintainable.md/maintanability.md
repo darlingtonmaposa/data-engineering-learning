@@ -158,7 +158,7 @@ Good abstractions allow systems to remain understandable and maintainable even a
 
 Throughout distributed systems engineering, designing good abstractions is one of the most important challenges.
 
-### Evolvability
+### 3. Evolvability
 
 Software systems rarely remain static. Requirements constantly change due to new user needs, business priorities, technological advances, and regulatory requirements.
 
