@@ -214,24 +214,3 @@ Examples include:
 However, such trade-offs should always be conscious engineering decisions.
 
 
-# 2. Scalability 
-
-Scalability refers to a system's ability to handle increased load.
-
-Even if a system works reliably today, growth in users or data volume may cause performance degradation.
-
-## Examples of Load Growth
-
-- concurrent users increasing (10,000 → 100,000)
-- data volume increasing (1 million → 10 million records)
-
-## Key Idea
-
-Scalability is not a fixed attribute of a system.
-
-Instead, engineers must consider how systems can handle growth by adding resources.
-
-Typical questions include:
-
-- How will the system behave under increased load?
-- What options exist for adding computing resources?
