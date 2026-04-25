@@ -221,24 +221,17 @@ This section compares observed behavior between fan-out-on-read and fan-out-on-w
 
 ## Repository Structure
 ```
-mini-twitter-system/
-│
+mini-twitter-system /
 ├── README.md
-├── requirements.txt
+├── app
+│   ├── db.py
+│   ├── main.py
+│   └── services
 ├── experiment_notes.md
-│
-├── sql/
-│ ├── schema.sql
-│ └── seed.sql
-│
-├── app/
-│ ├── db.py
-│ ├── main.py
-│ └── services/
-│ ├── users.py
-│ ├── posts.py
-│ ├── follows.py
-│ └── timeline.py
+├── requirements.txt
+└── sql
+    ├── schema.sql
+    └── seed.sql
 ```
 
 
