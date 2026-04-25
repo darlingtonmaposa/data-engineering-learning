@@ -220,7 +220,7 @@ This section compares observed behavior between fan-out-on-read and fan-out-on-w
 ---
 
 ## Repository Structure
-mini-twitter-system/
+```mini-twitter-system/
 │
 ├── README.md
 ├── requirements.txt
@@ -237,7 +237,7 @@ mini-twitter-system/
 │ ├── users.py
 │ ├── posts.py
 │ ├── follows.py
-│ └── timeline.py
+│ └── timeline.py```
 
 
 ### Structure Overview
