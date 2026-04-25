@@ -220,8 +220,8 @@ This section compares observed behavior between fan-out-on-read and fan-out-on-w
 ---
 
 ## Repository Structure
-mini-twitter-system/
 ```
+mini-twitter-system/
 │
 ├── README.md
 ├── requirements.txt
