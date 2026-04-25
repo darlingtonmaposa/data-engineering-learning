@@ -273,7 +273,7 @@ Ensure PostgreSQL is running and accessible.
 
 ```bash
 psql -U postgres -h <host-ip> -p 5432 -d mini_twitter -f sql/schema.sql
-
+```
 
 ## Running the Project
 Execute the main script:
