@@ -1,101 +1,221 @@
-# Mini Twitter System — Data Engineering Lab
+# Mini Twitter System
+
+> A data engineering lab exploring timeline architectures and read/write tradeoffs in data systems.
+
+![Cover](images/cover.png)
+
+---
 
 ## Overview
 
-This project models a simplified social media system to explore **data modeling**, **query design**, and **read/write tradeoffs** in data systems.
+This project models a simplified social media system to understand how **data models and query patterns shape system behavior**.
 
-The focus is not on building a full application, but on understanding how **data structures determine system behavior**.
-
-Core feature implemented:
-- User timelines (home feed)
-
-Two architectures are explored:
-- **Fan-out-on-read** (compute timeline at query time)
-- **Fan-out-on-write** (precompute timeline at write time)
+The primary focus is the design of **user timelines (home feeds)** and how different architectures impact performance and complexity.
 
 ---
 
-## Objectives
+## Core Idea
 
-This lab is designed to build intuition for:
+> The way you structure data determines how your system behaves.
 
-- Structuring data to represent real-world relationships
-- Designing queries that drive application behavior
-- Understanding **read vs write tradeoffs**
-- Working with **derived state (precomputed data)**
-- Thinking in terms of **systems, not just code**
+This project explores two approaches:
+
+- **Fan-out-on-read** → compute timeline when requested  
+- **Fan-out-on-write** → precompute timeline when data is written  
 
 ---
 
-## System Architecture
+## Architecture
 
-The system consists of three main layers:
-
-### 1. Application Layer
-- Python services
-- Responsible for orchestrating reads and writes
-
-### 2. Data Layer
-- PostgreSQL database
-- Stores system state and relationships
-
-### 3. Interface Layer
-- CLI-based execution (via Python scripts)
-- Direct SQL inspection via `psql`
+![Architecture](images/architecture.png)
 
 ---
 
 ## Data Model
 
-The system is built around four core tables:
-
-| Table     | Purpose                                      |
-|----------|----------------------------------------------|
-| `users`   | Stores user identities                       |
-| `posts`   | Stores user-generated content                |
-| `follows` | Models the social graph (who follows who)    |
-| `timeline`| Stores precomputed feed entries              |
+| Table      | Description                              |
+|------------|------------------------------------------|
+| `users`    | User identities                          |
+| `posts`    | User-generated content                   |
+| `follows`  | Social graph (who follows who)           |
+| `timeline` | Precomputed feed entries (derived state) |
 
 ---
 
-## Timeline Architectures
+## Timeline Strategies
 
-### 1. Fan-out-on-read
+### Fan-out-on-read
 
-**Approach:**
-- Timeline is computed at query time
-- Posts are fetched dynamically based on follow relationships
-
-**Characteristics:**
-- Cheap writes
-- Expensive reads
-- No duplication of feed data
+- Timeline computed at query time  
+- Fetch posts based on follow relationships  
+- **Cheap writes, expensive reads**  
+- No data duplication  
 
 ---
 
-### 2. Fan-out-on-write
+### Fan-out-on-write
 
-**Approach:**
-- Timeline entries are created when a post is written
-- Each follower receives a feed entry
-
-**Characteristics:**
-- Expensive writes
-- Cheap reads
+- Timeline entries created on post creation  
+- Each follower receives a feed entry  
+- **Expensive writes, cheap reads**  
 - Introduces **derived state**
 
 ---
 
-## Key Tradeoff
+## Tradeoff
 
-This project demonstrates a fundamental system design tradeoff:
+| Strategy            | Write Cost | Read Cost | Complexity |
+|--------------------|-----------|----------|-----------|
+| Fan-out-on-read     | Low       | High     | Low       |
+| Fan-out-on-write    | High      | Low      | Higher    |
 
-> “Do we compute results when needed, or store them in advance?”
+> There is no universally correct approach — it depends on workload characteristics.
 
-| Strategy            | Write Cost | Read Cost | Storage |
-|--------------------|-----------|----------|--------|
-| Fan-out-on-read     | Low       | High     | Low    |
-| Fan-out-on-write    | High      | Low      | Higher |
+---
+
+## Design Decisions
+
+### Relational Data Model (PostgreSQL)
+- Chosen for strong consistency and relational modeling
+- Enables expressive SQL queries
+
+**Tradeoff:** joins can become expensive at scale  
+
+---
+
+### Separate `follows` Table
+- Models many-to-many relationships cleanly
+
+**Tradeoff:** requires joins for relationship resolution  
+
+---
+
+### Start with Fan-out-on-read
+- Simpler baseline
+- No duplication
+
+**Tradeoff:** expensive reads  
+
+---
+
+### Introduce Fan-out-on-write (`timeline`)
+- Improves read performance
+- Stores derived state
+
+**Tradeoff:** increased write cost and complexity  
+
+---
+
+### Store References, Not Full Data
+- `timeline` stores `post_id` only
+
+**Tradeoff:** requires joins when reading  
+
+---
+
+### Enforce Uniqueness
+- Prevent duplicate timeline entries
+
+**Tradeoff:** adds constraint overhead  
+
+---
+
+### Synchronous Fan-out
+- Simple and easy to debug
+
+**Tradeoff:** write latency increases  
+
+---
+
+### No Background Processing
+- Keeps system simple for learning
+
+**Tradeoff:** not scalable  
+
+---
+
+### Raw SQL over ORM
+- Full control and visibility
+
+**Tradeoff:** more verbose  
+
+---
+
+### Manual Schema Management
+- Clear understanding of schema evolution
+
+**Tradeoff:** not production scalable  
+
+---
+
+## Experiment Results
+
+This section compares observed behavior between fan-out-on-read and fan-out-on-write using the same dataset.
+
+---
+
+### Test Setup
+
+- Users: 3–5  
+- Posts: multiple per user  
+- Follow relationships established  
+- Timeline retrieved multiple times  
+
+---
+
+### Fan-out-on-read
+
+**Write Path**
+- 1 insert into `posts`
+
+**Read Path**
+- 1 query with:
+  - subquery on `follows`
+  - join with `posts`
+  - sorting (`ORDER BY created_at DESC`)
+
+**Observations**
+- Simple write logic  
+- Query becomes more complex as data grows  
+- Read latency increases with:
+  - number of posts
+  - number of follow relationships  
+
+---
+
+### Fan-out-on-write
+
+**Write Path**
+- 1 insert into `posts`
+- N inserts into `timeline` (N = number of followers)
+
+**Read Path**
+- Simple query:
+  - fetch from `timeline`
+  - join with `posts`
+
+**Observations**
+- Write cost increases significantly  
+- Read queries are much simpler and faster  
+- Timeline is immediately available without computation  
+
+---
+
+### Comparative Summary
+
+| Aspect        | Fan-out-on-read | Fan-out-on-write |
+|--------------|----------------|------------------|
+| Write Cost    | Low            | High             |
+| Read Cost     | High           | Low              |
+| Query Complexity | High       | Low              |
+| Data Duplication | None       | Partial (timeline entries) |
+| Scalability   | Read-limited   | Write-limited    |
+
+---
+
+### Key Insight
+
+> Work can be shifted between read-time and write-time, but it cannot be eliminated.
 
 ---
 
@@ -103,6 +223,9 @@ This project demonstrates a fundamental system design tradeoff:
 mini-twitter-system/
 │
 ├── README.md
+├── requirements.txt
+├── experiment_notes.md
+│
 ├── sql/
 │ ├── schema.sql
 │ └── seed.sql
@@ -115,10 +238,26 @@ mini-twitter-system/
 │ ├── posts.py
 │ ├── follows.py
 │ └── timeline.py
-│
-└── images/
-└── architecture.png
 
+
+### Structure Overview
+
+- **`sql/`**  
+  Contains database definitions and seed data  
+  - `schema.sql` → database schema (tables, constraints)  
+  - `seed.sql` → sample data for testing  
+
+- **`app/`**  
+  Application logic for interacting with the database  
+  - `db.py` → database connection management  
+  - `main.py` → entry point for running the system  
+  - `services/` → domain logic (users, posts, follows, timeline)  
+
+- **`experiment_notes.md`**  
+  Observations and findings from comparing timeline strategies  
+
+- **`requirements.txt`**  
+  Python dependencies  
 
 ---
 
