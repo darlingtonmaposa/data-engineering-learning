@@ -183,7 +183,7 @@ This project connects directly to concepts from:
 
 ### 2. Setup Database
 
-`psql -U postgres -d mini_twitter -f sql/schema.sql`
+`psql -U postgres -d mini_twitter -f sql/schema.sql`<br>
 `psql -U postgres -d mini_twitter -f sql/seed.sql`
 
 ### 3. Run Application
