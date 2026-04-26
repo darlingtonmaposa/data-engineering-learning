@@ -183,11 +183,11 @@ This project connects directly to concepts from:
 
 ### 2. Setup Database
 
-psql -U postgres -d mini_twitter -f sql/schema.sql
-psql -U postgres -d mini_twitter -f sql/seed.sql
+`psql -U postgres -d mini_twitter -f sql/schema.sql`
+`psql -U postgres -d mini_twitter -f sql/seed.sql`
 
 ### 3. Run Application
-python app/main.py
+`python app/main.py`
 
 
 ## 🔍 What To Look For When Running
