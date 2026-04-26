@@ -129,7 +129,6 @@ mini-twitter-system /
 - **`requirements.txt`**  
   Python dependencies  
 
-
 ---
 
 ## ⚙️ Data Model
@@ -142,7 +141,21 @@ Core tables:
 - `timeline` → precomputed feed (fan-out-on-write)
 
 ---
+## ⚠️ Failure Modes (Preview)
 
+Each design introduces different system risks:
+
+- **Fan-out-on-read**
+  - Slow timeline queries
+  - High read load under traffic spikes
+
+- **Fan-out-on-write**
+  - Write amplification for high-follower users
+  - Hotspots and uneven load distribution
+
+👉 Full analysis: [`experiment_notes.md`](experiment_notes.md)
+
+---
 ## 🧠 Key Engineering Insights
 
 From this project:
