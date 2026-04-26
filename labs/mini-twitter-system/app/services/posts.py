@@ -1,4 +1,5 @@
 from db import get_db_connection
+from services.timeline import add_post_to_timeline
 
 def create_post(user_id, content):
     """
@@ -7,26 +8,38 @@ def create_post(user_id, content):
     conn = get_db_connection()
     cursor = conn.cursor()
     
-    # Insert the new post into the posts table
-    cursor.execute(
-        """
-        INSERT INTO posts (user_id, content) 
-        VALUES (%s, %s)
-        RETURNING id, user_id, content, created_at;
-        """, 
-        (user_id, content)
-    )
-    
-    # Fetch the newly created post record
-    post = cursor.fetchone()
-    
-    # Commit the transaction and close the connection
-    conn.commit()
-    cursor.close()
-    conn.close()
-    
-    # Return the created post record to the caller
-    return post
+    try:
+        # Insert the new post into the posts table
+        cursor.execute(
+            """
+            INSERT INTO posts (user_id, content) 
+            VALUES (%s, %s)
+            RETURNING id;
+            """, 
+            (user_id, content)
+        )
+        
+        # Fetch the newly created post record
+        post_id = cursor.fetchone()[0]  # Get the post ID from the returned record
+        
+        # Commit the transaction and close the connection
+        conn.commit()
+        cursor.close()
+        conn.close()
+        
+
+        add_post_to_timeline(user_id, post_id)  # Add the new post to the timelines of followers
+
+        # Return the created post record to the caller
+        return post_id # Return the post ID instead of the full record, since we only need the ID for timeline updates
+
+    except Exception as e:
+        conn.rollback()  # Rollback in case of any error
+        raise e  # Re-raise the exception after rollback
+
+    finally:
+        cursor.close()
+        conn.close()
 
 
 def get_all_posts():            

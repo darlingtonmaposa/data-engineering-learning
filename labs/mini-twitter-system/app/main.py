@@ -1,6 +1,8 @@
 from services.users import get_all_users, get_user_by_id
 from services.posts import get_all_posts, get_post_by_id
 from services.timeline import get_timeline
+from services.timeline import add_post_to_timeline
+from services.posts import create_post
 
 
 
@@ -46,9 +48,13 @@ def test_get_timeline(user_id):
         print(f"[{created_at}] {author_name}: {content}")
 
 
+
 if __name__ == "__main__":
     # test_get_all_users()
     # test_get_user_by_id(user_id=1)
     # test_get_all_posts()
     # test_get_post_by_id(post_id=2)
-    test_get_timeline(user_id=1)
+    # test_get_timeline(user_id=1)
+
+    new_post_id = create_post(2, "Testing fan-out-on-write from create_post")
+    print(f"Created post with id: {new_post_id}")

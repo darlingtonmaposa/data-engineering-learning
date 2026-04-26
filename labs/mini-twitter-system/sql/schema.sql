@@ -29,3 +29,12 @@ CREATE TABLE IF NOT EXISTS follows (
 );
 
 
+-- Stores the timeline entries for users.
+-- Each row represents one post that should appear in a user's timeline.
+CREATE TABLE IF NOT EXISTS timeline (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE, -- The user whose timeline this entry belongs to
+    post_id INTEGER NOT NULL REFERENCES posts(id) ON DELETE CASCADE, -- The post that should appear in the timeline
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE (user_id, post_id) -- Ensure a user sees each post only once in their timeline
+);
