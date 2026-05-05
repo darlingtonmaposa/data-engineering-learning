@@ -27,9 +27,6 @@ This project is built around a fundamental systems principle:
 
 **Data Model → Query Pattern → System Behavior → Trade-offs → Scaling Limits**
 
-Inspired by:
-- *Designing Data-Intensive Applications (DDIA)*
-
 ---
 
 # 🧠 2. Problem Statement
