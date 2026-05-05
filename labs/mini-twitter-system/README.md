@@ -233,19 +233,6 @@ mini-twitter-system /
 | Experiments | Captures system insights |
 
 ---
-
----
-
-## ⚙️ Data Model
-
-Core tables:
-
-- `users` → system users
-- `posts` → content created by users
-- `follows` → social graph (who follows who)
-- `timeline` → precomputed feed (fan-out-on-write)
-
----
 ## ⚠️ Failure Modes (Preview)
 
 Each design introduces different system risks:
