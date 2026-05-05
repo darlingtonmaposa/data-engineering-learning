@@ -1,98 +1,194 @@
-# 🐦 Mini Twitter System — Timeline Architecture Exploration
+# 🐦 Mini Twitter System  
+## Timeline Architecture & Data Model Trade-off Exploration
 
-> A data engineering lab exploring timeline architectures and read/write tradeoffs in data systems.
+> A systems-first data engineering lab that explores how **data models and query patterns shape system behavior at scale**.
+
+---
 
 ![Cover](images/cover.png)
 
 ---
 
-## 🧭 Overview
+# 🧭 1. Why This Project Exists
 
-This project is a simplified Twitter-like system built to explore a fundamental distributed systems question:
+Most data engineering projects answer:
 
-> **How should a timeline be generated at scale?**
+> “Can you build a pipeline?”
 
-Specifically:
+This project answers a deeper question:
 
-- Should timelines be **computed on demand (fan-out-on-read)**?
-- Or **precomputed at write time (fan-out-on-write)**?
-
-This project is not about features.
-
-It is about understanding how **data models and query patterns shape system behavior**.
+> **“Do you understand how systems behave under different data modeling choices?”**
 
 ---
 
-## 🧠 Problem Statement
+## The Core Idea
 
-In a social system:
+This project is built around a fundamental systems principle:
 
-- Users follow other users
-- Users create posts
-- Each user expects a **timeline (feed)** of posts from people they follow
+**Data Model → Query Pattern → System Behavior → Trade-offs → Scaling Limits**
 
-At small scale, this is simple.
-
-At large scale, it becomes a **systems design problem**.
+Inspired by:
+- *Designing Data-Intensive Applications (DDIA)*
 
 ---
 
-## ⚖️ The Core Trade-off
+# 🧠 2. Problem Statement
 
-We explore two competing approaches:
+We model a simplified social system:
 
-### 🟦 Fan-out-on-Read (Compute on Demand)
+- Users follow other users  
+- Users create posts  
+- Each user retrieves a **timeline (feed)**  
 
-- Timeline generated when the user requests it
-- Data is not duplicated
-- Heavy read queries (joins, filtering, sorting)
+At small scale, this is trivial.
 
-### 🟥 Fan-out-on-Write (Precompute)
-
-- Timeline generated when a post is created
-- Data is duplicated into follower timelines
-- Writes become expensive, reads become fast
+At large scale, it becomes a **distributed systems problem**.
 
 ---
 
+## The Real Question
 
-## 🏗️ System Architecture (High-Level)
+> **Where should the cost of generating timelines live?**
+
+---
+
+# ⚖️ 3. The Core Trade-off
+
+## 🟦 Fan-out-on-Read (Compute on Demand)
+
+**Read Path:**
+- User requests timeline  
+- System queries posts from followees  
+- Results are sorted and returned  
+
+### Characteristics
+- No data duplication  
+- Heavy read queries (joins + sorting)  
+- Cheap writes  
+
+---
+
+## 🟥 Fan-out-on-Write (Precompute Timeline)
+
+**Write Path:**
+- User creates post  
+- System distributes post to followers  
+- Timeline is stored ahead of time  
+
+### Characteristics
+- Data duplication  
+- Expensive writes  
+- Extremely fast reads  
+
+---
+
+## 🔑 Key Insight
+
+> You are not choosing an implementation.  
+> You are choosing **where the system pays the cost**.
+
+---
+
+# 🏗️ 4. System Architecture
 
 ![Architecture](images/architecture.png)
 
 ---
----
 
-## 🔬 What This Project Explores
+## System Layers
 
-This repository investigates:
-
-- Read vs write amplification
-- Query complexity vs data duplication
-- Impact of social graph structure (followers/followees)
-- Performance implications of different designs
+### Layer 1 — Data Model (State)
+- Users
+- Posts
+- Social graph (follows)
+- Timeline (optional, precomputed)
 
 ---
 
-## 🧪 Experiments (Core of This Project)
+### Layer 2 — Query Patterns (Access)
+- “Get posts from users I follow”
+- “Insert post”
+- “Distribute post to followers”
 
-The most important part of this project is not the code.
-
-It is the **experiments and observations**.
-
-👉 **Read the full experiment analysis here:**
-
-➡️ [`experiment_notes.md`](experiment_notes.md)
-
-Inside, you will find:
-
-- Structured experiments
-- Hypotheses and observations
-- System-level insights
-- Trade-off analysis 
 ---
 
-## 📦 Project Structure
+### Layer 3 — System Behavior (Emergent)
+- Read latency
+- Write amplification
+- Storage growth
+- Load distribution
+
+---
+
+# 🧪 5. Experiments (Core of This Project)
+
+> The code is not the product.  
+> **The experiments and observations are the product.**
+
+---
+
+## What This Project Explores
+
+- Read vs write amplification  
+- Query complexity vs data duplication  
+- Impact of follower count distribution  
+- Performance implications of different designs  
+
+---
+
+## Where to Find Results
+
+👉 Full analysis: [`experiment_notes.md`](experiment_notes.md)
+
+---
+
+## Example Observations
+
+### Fan-out-on-Read
+- Scales poorly under heavy read load  
+- Simpler system (fewer moving parts)  
+
+---
+
+### Fan-out-on-Write
+- Write amplification for users with many followers  
+- Introduces uneven load and hotspots  
+
+---
+
+## Senior-Level Insight
+
+> Systems fail where **pressure accumulates**.
+
+---
+
+# 🗃️ 6. Data Model
+
+## Core Tables
+
+- `users` → system users  
+- `posts` → content created by users  
+- `follows` → social graph (who follows who)  
+- `timeline` → precomputed feed (fan-out-on-write)  
+
+---
+
+## Key Relationships
+
+- One user → many posts  
+- Many users ↔ many users (follows)  
+- One post → many timeline entries  
+
+---
+
+## Critical Observation
+
+> The `timeline` table is not required.  
+> It exists only because of a **query optimization decision**.
+
+---
+
+# 📦 7. Project Structure
 
 ```
 mini-twitter-system /
@@ -131,6 +227,18 @@ mini-twitter-system /
 
 ---
 
+## Structure Philosophy
+
+| Layer | Responsibility |
+|------|---------------|
+| SQL | Defines system state |
+| App | Executes behavior |
+| Experiments | Captures system insights |
+
+---
+
+---
+
 ## ⚙️ Data Model
 
 Core tables:
@@ -152,8 +260,6 @@ Each design introduces different system risks:
 - **Fan-out-on-write**
   - Write amplification for high-follower users
   - Hotspots and uneven load distribution
-
-👉 Full analysis: [`experiment_notes.md`](experiment_notes.md)
 
 ---
 ## 🧠 Key Engineering Insights
