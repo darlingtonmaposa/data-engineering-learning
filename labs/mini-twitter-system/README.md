@@ -1,225 +1,192 @@
-# Mini Twitter System
+# 🐦 Mini Twitter System  
+## Timeline Architecture & Data Model Trade-off Exploration
 
-> A data engineering lab exploring timeline architectures and read/write tradeoffs in data systems.
+> A systems-first data engineering lab that explores how **data models and query patterns shape system behavior at scale**.
+
+---
 
 ![Cover](images/cover.png)
 
 ---
 
-## Overview
+# 🧭 1. Why This Project Exists
 
-This project models a simplified social media system to understand how **data models and query patterns shape system behavior**.
+Most data engineering projects answer:
 
-The primary focus is the design of **user timelines (home feeds)** and how different architectures impact performance and complexity.
+> “Can you build a pipeline?”
 
----
+This project answers a deeper question:
 
-## Core Idea
-
-> The way you structure data determines how your system behaves.
-
-This project explores two approaches:
-
-- **Fan-out-on-read** → compute timeline when requested  
-- **Fan-out-on-write** → precompute timeline when data is written  
+> **“Do you understand how systems behave under different data modeling choices?”**
 
 ---
 
-## Architecture
+## The Core Idea
+
+This project is built around a fundamental systems principle:
+
+**Data Model → Query Pattern → System Behavior → Trade-offs → Scaling Limits**
+
+---
+
+# 🧠 2. Problem Statement
+
+We model a simplified social system:
+
+- Users follow other users  
+- Users create posts  
+- Each user retrieves a **timeline (feed)**  
+
+At small scale, this is trivial.
+
+At large scale, it becomes a **distributed systems problem**.
+
+---
+
+## The Real Question
+
+> **Where should the cost of generating timelines live?**
+
+---
+
+# ⚖️ 3. The Core Trade-off
+
+## 🟦 Fan-out-on-Read (Compute on Demand)
+
+**Read Path:**
+- User requests timeline  
+- System queries posts from followees  
+- Results are sorted and returned  
+
+### Characteristics
+- No data duplication  
+- Heavy read queries (joins + sorting)  
+- Cheap writes  
+
+---
+
+## 🟥 Fan-out-on-Write (Precompute Timeline)
+
+**Write Path:**
+- User creates post  
+- System distributes post to followers  
+- Timeline is stored ahead of time  
+
+### Characteristics
+- Data duplication  
+- Expensive writes  
+- Extremely fast reads  
+
+---
+
+## 🔑 Key Insight
+
+> You are not choosing an implementation.  
+> You are choosing **where the system pays the cost**.
+
+---
+
+# 🏗️ 4. System Architecture
 
 ![Architecture](images/architecture.png)
 
 ---
 
-## Data Model
+## System Layers
 
-| Table      | Description                              |
-|------------|------------------------------------------|
-| `users`    | User identities                          |
-| `posts`    | User-generated content                   |
-| `follows`  | Social graph (who follows who)           |
-| `timeline` | Precomputed feed entries (derived state) |
-
----
-
-## Timeline Strategies
-
-### Fan-out-on-read
-
-- Timeline computed at query time  
-- Fetch posts based on follow relationships  
-- **Cheap writes, expensive reads**  
-- No data duplication  
+### Layer 1 — Data Model (State)
+- Users
+- Posts
+- Social graph (follows)
+- Timeline (optional, precomputed)
 
 ---
 
-### Fan-out-on-write
-
-- Timeline entries created on post creation  
-- Each follower receives a feed entry  
-- **Expensive writes, cheap reads**  
-- Introduces **derived state**
+### Layer 2 — Query Patterns (Access)
+- “Get posts from users I follow”
+- “Insert post”
+- “Distribute post to followers”
 
 ---
 
-## Tradeoff
-
-| Strategy            | Write Cost | Read Cost | Complexity |
-|--------------------|-----------|----------|-----------|
-| Fan-out-on-read     | Low       | High     | Low       |
-| Fan-out-on-write    | High      | Low      | Higher    |
-
-> There is no universally correct approach — it depends on workload characteristics.
+### Layer 3 — System Behavior (Emergent)
+- Read latency
+- Write amplification
+- Storage growth
+- Load distribution
 
 ---
 
-## Design Decisions
+# 🧪 5. Experiments (Core of This Project)
 
-### Relational Data Model (PostgreSQL)
-- Chosen for strong consistency and relational modeling
-- Enables expressive SQL queries
-
-**Tradeoff:** joins can become expensive at scale  
+> The code is not the product.  
+> **The experiments and observations are the product.**
 
 ---
 
-### Separate `follows` Table
-- Models many-to-many relationships cleanly
+## What This Project Explores
 
-**Tradeoff:** requires joins for relationship resolution  
-
----
-
-### Start with Fan-out-on-read
-- Simpler baseline
-- No duplication
-
-**Tradeoff:** expensive reads  
+- Read vs write amplification  
+- Query complexity vs data duplication  
+- Impact of follower count distribution  
+- Performance implications of different designs  
 
 ---
 
-### Introduce Fan-out-on-write (`timeline`)
-- Improves read performance
-- Stores derived state
+## Where to Find Results
 
-**Tradeoff:** increased write cost and complexity  
+👉 Full analysis: [`experiment_notes.md`](experiment_notes.md)
 
 ---
 
-### Store References, Not Full Data
-- `timeline` stores `post_id` only
+## Example Observations
 
-**Tradeoff:** requires joins when reading  
-
----
-
-### Enforce Uniqueness
-- Prevent duplicate timeline entries
-
-**Tradeoff:** adds constraint overhead  
+### Fan-out-on-Read
+- Scales poorly under heavy read load  
+- Simpler system (fewer moving parts)  
 
 ---
 
-### Synchronous Fan-out
-- Simple and easy to debug
-
-**Tradeoff:** write latency increases  
-
----
-
-### No Background Processing
-- Keeps system simple for learning
-
-**Tradeoff:** not scalable  
+### Fan-out-on-Write
+- Write amplification for users with many followers  
+- Introduces uneven load and hotspots  
 
 ---
 
-### Raw SQL over ORM
-- Full control and visibility
+## Senior-Level Insight
 
-**Tradeoff:** more verbose  
-
----
-
-### Manual Schema Management
-- Clear understanding of schema evolution
-
-**Tradeoff:** not production scalable  
+> Systems fail where **pressure accumulates**.
 
 ---
 
-## Experiment Results
+# 🗃️ 6. Data Model
 
-This section compares observed behavior between fan-out-on-read and fan-out-on-write using the same dataset.
+## Core Tables
 
----
-
-### Test Setup
-
-- Users: 3–5  
-- Posts: multiple per user  
-- Follow relationships established  
-- Timeline retrieved multiple times  
+- `users` → system users  
+- `posts` → content created by users  
+- `follows` → social graph (who follows who)  
+- `timeline` → precomputed feed (fan-out-on-write)  
 
 ---
 
-### Fan-out-on-read
+## Key Relationships
 
-**Write Path**
-- 1 insert into `posts`
-
-**Read Path**
-- 1 query with:
-  - subquery on `follows`
-  - join with `posts`
-  - sorting (`ORDER BY created_at DESC`)
-
-**Observations**
-- Simple write logic  
-- Query becomes more complex as data grows  
-- Read latency increases with:
-  - number of posts
-  - number of follow relationships  
+- One user → many posts  
+- Many users ↔ many users (follows)  
+- One post → many timeline entries  
 
 ---
 
-### Fan-out-on-write
+## Critical Observation
 
-**Write Path**
-- 1 insert into `posts`
-- N inserts into `timeline` (N = number of followers)
-
-**Read Path**
-- Simple query:
-  - fetch from `timeline`
-  - join with `posts`
-
-**Observations**
-- Write cost increases significantly  
-- Read queries are much simpler and faster  
-- Timeline is immediately available without computation  
+> The `timeline` table is not required.  
+> It exists only because of a **query optimization decision**.
 
 ---
 
-### Comparative Summary
+# 📦 7. Project Structure
 
-| Aspect        | Fan-out-on-read | Fan-out-on-write |
-|--------------|----------------|------------------|
-| Write Cost    | Low            | High             |
-| Read Cost     | High           | Low              |
-| Query Complexity | High       | Low              |
-| Data Duplication | None       | Partial (timeline entries) |
-| Scalability   | Read-limited   | Write-limited    |
-
----
-
-### Key Insight
-
-> Work can be shifted between read-time and write-time, but it cannot be eliminated.
-
----
-
-## Repository Structure
 ```
 mini-twitter-system /
 ├── README.md
@@ -232,6 +199,7 @@ mini-twitter-system /
 └── sql
     ├── schema.sql
     └── seed.sql
+└── images
 ```
 
 
@@ -256,57 +224,102 @@ mini-twitter-system /
 
 ---
 
-## Setup
+## Structure Philosophy
 
-### 1. Start PostgreSQL
+| Layer | Responsibility |
+|------|---------------|
+| SQL | Defines system state |
+| App | Executes behavior |
+| Experiments | Captures system insights |
 
-Ensure PostgreSQL is running and accessible.
+---
+## ⚠️ Failure Modes (Preview)
 
-### 2. Apply schema
+Each design introduces different system risks:
 
-```bash
-psql -U postgres -h <host-ip> -p 5432 -d mini_twitter -f sql/schema.sql
-```
+- **Fan-out-on-read**
+  - Slow timeline queries
+  - High read load under traffic spikes
 
-## Running the Project
-Execute the main script:
-This runs test flows such as:
+- **Fan-out-on-write**
+  - Write amplification for high-follower users
+  - Hotspots and uneven load distribution
 
-- user creation
-- post creation
-- follow relationships
-- timeline retrieval
+---
+## 🧠 Key Engineering Insights
 
-## Observability
-Inspect database state directly:
-`psql -U postgres -h <host-ip> -p 5432 -d mini_twitter`
+From this project:
 
-## Failure Modes
-Introducing fan-out-on-write adds complexity:
+- **Data model + query pattern = system behavior**
+- There is no “best” architecture — only trade-offs
+- Systems shift cost between:
+  - reads
+  - writes
+  - storage
+- Real-world performance depends on:
+  - user behavior
+  - graph structure
+  - access patterns
 
-- Partial fan-out (some followers receive entries, others don’t)
-- Duplicate entries (guarded by constraints)
-- Timeline inconsistency with source data
-- Increased write amplification
+---
 
-This highlights a key principle:
+## 🔗 Mapping to Distributed Systems Concepts
 
-*Derived data must be carefully maintained.*
+This project connects directly to concepts from:
 
-## Key Learnings
-- Data models define system capabilities
-- Queries define application behavior
-- Performance is a consequence of design choices
-- Precomputation trades storage and write cost for read efficiency
-- Systems become more complex as optimization increases
+- Scalability
+- Reliability
+- Maintainability
+- Trade-offs in system design
+
+---
+
+## 🚀 How to Run
+
+### 1. Environment
+
+- WSL (Linux)
+- Python
+- PostgreSQL
+
+---
+
+### 2. Setup Database
+
+`psql -U postgres -d mini_twitter -f sql/schema.sql`<br>
+`psql -U postgres -d mini_twitter -f sql/seed.sql`
+
+### 3. Run Application
+`python app/main.py`
 
 
-## Future Improvements
-- Pagination for timelines
-- Indexing strategies for performance
-- Handling high-follower users (celebrity problem)
-- Background jobs for asynchronous fan-out
--Event-driven architecture (Kafka-style)
+## 🔍 What To Look For When Running
+- How timeline queries behave as data grows
+- Difference between:
+  - dynamic timeline generation
+  - precomputed timeline
+- Cost of writes vs reads
+
+## Why This Project Matters
+This is a toy system with real-world implications.
+The same trade-offs explored here appear in:
+- Social media feeds
+- Notification systems
+- Event-driven architectures
+- Data pipelines
+
+## 🧭 Next Steps (Future Work)
+- Introduce async fan-out using queues
+- Simulate high follower counts
+- Add performance measurements (latency)
+- Explore hybrid approaches
+
+📎 Final Thought
+
+|  You don’t start by designing features.
+|  You start by designing data models and access patterns.
+
+Everything else emerges from that.
 
 ## References
 - Designing Data-Intensive Applications (DDIA)
