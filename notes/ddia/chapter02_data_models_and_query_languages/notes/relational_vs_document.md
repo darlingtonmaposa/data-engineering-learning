@@ -117,3 +117,106 @@ It is:
 - a reasoning framework
 - a set of trade-offs
 - a way of thinking about system behavior
+
+# Relational Model vs Document Model
+
+## Core Insight
+
+Data models are abstractions that shape:
+- system behavior
+- query flexibility
+- scalability characteristics
+- engineering thinking
+
+---
+
+# Why NoSQL Emerged
+
+NoSQL systems emerged due to pressures from:
+- internet-scale workloads
+- massive write throughput
+- flexible schemas
+- distributed architectures
+- specialized query patterns
+
+This was fundamentally:
+```text
+changing application requirements
+→ new data modeling pressures
+```
+
+---
+
+# Polyglot Persistence
+
+Modern systems often use multiple database models simultaneously.
+
+Example:
+- PostgreSQL for transactions
+- Redis for caching
+- Elasticsearch for search
+- Neo4j for graph traversal
+
+Database selection should follow:
+```text
+workload + query pattern
+```
+
+not hype.
+
+---
+
+# Object-Relational Mismatch
+
+Applications naturally model data as:
+- objects
+- nested structures
+- hierarchies
+
+Relational systems model data as:
+- tables
+- rows
+- normalized relationships
+
+This creates translation complexity.
+
+---
+
+# Mental Model
+
+```text
+Application Objects
+≠
+Relational Representation
+```
+
+---
+
+# ORM Insight
+
+ORMs reduce translation boilerplate but cannot fully eliminate the conceptual mismatch between objects and relations.
+
+---
+
+# Systems Thinking Insight
+
+Different representations optimize different things:
+
+| Model | Optimizes |
+|---|---|
+| Relational | consistency, joins, normalization |
+| Document | hierarchical representation, flexibility |
+| Graph | relationship traversal |
+| Key-value | fast lookup |
+
+---
+
+# Key Takeaway
+
+There is no universally superior data model.
+
+The correct model depends on:
+- features
+- access patterns
+- scalability requirements
+- query behavior
